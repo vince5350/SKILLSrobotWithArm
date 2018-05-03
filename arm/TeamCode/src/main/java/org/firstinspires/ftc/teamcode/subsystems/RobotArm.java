@@ -23,8 +23,8 @@ public class RobotArm {
     //Controls the claw
         //To use, put in "if" statement.
     public void claw(double clawAngle){
-        leftClaw.setPosition(clawAngle);
-        rightClaw.setPosition(clawAngle);
+        this.leftClaw.setPosition(clawAngle);
+        this.rightClaw.setPosition(clawAngle);
     }
 
     public void armBase(double baseSpeed){

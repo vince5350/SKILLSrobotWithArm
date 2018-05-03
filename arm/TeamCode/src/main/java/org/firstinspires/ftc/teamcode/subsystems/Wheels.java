@@ -12,7 +12,6 @@ public class Wheels {
         this.motorBackLeft = motorBackLeft;
         this.motorFrontRight = motorFrontRight;
         this.motorBackRight = motorBackRight;
-
     }
 
     public void drive(double leftFrontWheel, double leftBackWheel,
