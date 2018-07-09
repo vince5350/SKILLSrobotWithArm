@@ -1,34 +1,26 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 //import org.firstinspires.ftc.teamcode.main;
 
 public class RobotArm {
-    private Servo leftClaw, rightClaw, servoJoint = null;
-    private DcMotor base = null;
+    private Servo servoClaw, servoJoint = null;
+
     //static private final int ENCODER_DEGREE = (360/1680);
     //private main source = new main();
 
 
-    public RobotArm(Servo leftClaw, Servo rightClaw,
-                    Servo servoJoint, DcMotor base){
-        this.leftClaw = leftClaw;
-        this.rightClaw = rightClaw;
+    public RobotArm(Servo servoClaw,
+                    Servo servoJoint){
+        this.servoClaw = servoClaw;
         this.servoJoint = servoJoint;
-        this.base = base;
+
     }
 
     //Controls the claw
-        //To use, put in "if" statement.
     public void claw(double clawAngle){
-        this.leftClaw.setPosition(clawAngle);
-        this.rightClaw.setPosition(clawAngle);
-    }
-
-    public void armBase(double baseSpeed){
-        this.base.setPower(baseSpeed);
+        this.servoClaw.setPosition(clawAngle);
     }
 
     public void joint(double jointAngle){

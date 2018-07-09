@@ -2,9 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.subsystems.RobotMap;
 import org.firstinspires.ftc.teamcode.subsystems.Wheels;
@@ -14,12 +11,6 @@ import org.firstinspires.ftc.teamcode.subsystems.RobotArm;
 @TeleOp
 public class main extends OpMode {
     public main() {}
-
-    //Timers for Debug classes
-    private ElapsedTime timerDrive = new ElapsedTime();
-    private ElapsedTime timerArm = new ElapsedTime();
-
-    //A value that changes the resulting data form encoders to be in degrees
 
 
     //Instantiates the RobotMap class and set it to a local variable
@@ -37,48 +28,38 @@ public class main extends OpMode {
     public void init(){
         robot.init(hardwareMap);
         tank = new Wheels(robot.frontLftWheel, robot.frontRhtWheel,
-                robot.backLftWheel, robot.backRhtWheel);
-
-
-        arm = new RobotArm(robot.clawLeft, robot.clawRight,
-                robot.armJointServo, RobotMap.baseMotor);
-
+                          robot.backLftWheel, robot.backRhtWheel);
+        arm = new RobotArm(robot.servoClaw, robot.armJointServo);
     }
 
     //After start button pressed, do this
     public void start(){
-        timerDrive.reset();
-        timerArm.reset();
+
     }
 
     //Controls any actions performed by robot after start is pressed
     public void loop() {
-        timerDrive.reset();
-        timerArm.reset();
-        double DRIVE_SPEED = 0.5;
-        int position = RobotMap.baseMotor.getCurrentPosition();
-        telemetry.addData("Encoder Position",
-                            position + 360 / 1680);
+
+        double DRIVE_SPEED = 0.3;
 
         //Controller variables for ease of programming
-        //Sets controls to a variable and clips their ranges
-        //double leftStickY1, leftStickX1;
-        boolean buttonX = gamepad1.x;
-        boolean buttonY = gamepad1.y;
-        //boolean leftClick1 = gamepad1.left_stick_button;
-        //boolean rightClick1 = gamepad1.right_stick_button;
+        boolean select = gamepad1.back;
+
+        boolean left_click = gamepad1.left_stick_button;
+        boolean right_click = gamepad1.right_stick_button;
+
         boolean buttonA = gamepad1.a;
         boolean buttonB = gamepad1.b;
+        boolean buttonX = gamepad1.x;
+        boolean buttonY = gamepad1.y;
+
         boolean leftBump1 = gamepad1.left_bumper;
         boolean rightBump1 = gamepad1.right_bumper;
+
         boolean dpadUp1 = gamepad1.dpad_up;
         boolean dpadDown1 = gamepad1.dpad_down;
         boolean dpadLeft1 = gamepad1.dpad_left;
         boolean dpadRight1 = gamepad1.dpad_right;
-        double lTrigger, rTrigger;
-        lTrigger = Range.clip(gamepad1.left_trigger, 0, 0.8);
-        rTrigger = Range.clip(gamepad1.right_trigger, 0, 0.8);
-
 
         //Action that drives the robot
         if (dpadUp1) {
@@ -96,11 +77,13 @@ public class main extends OpMode {
 
         //Turn Left
         if (leftBump1) {
-            tank.drive(-DRIVE_SPEED, -DRIVE_SPEED, -DRIVE_SPEED, -DRIVE_SPEED);
+            tank.drive(-DRIVE_SPEED/2, -DRIVE_SPEED/2,
+                    -DRIVE_SPEED/2, -DRIVE_SPEED/2);
         }
         //Turn Right
         if (rightBump1) {
-            tank.drive(DRIVE_SPEED, DRIVE_SPEED, DRIVE_SPEED, DRIVE_SPEED);
+            tank.drive(DRIVE_SPEED/2, DRIVE_SPEED/2,
+                    DRIVE_SPEED/2, DRIVE_SPEED/2);
         }
 
         if (!dpadUp1 && !dpadDown1 && !dpadLeft1 &&
@@ -109,41 +92,25 @@ public class main extends OpMode {
                     0, 0);
         }
 
-
-        //Arm Base
-        if (lTrigger > 0.05) {
-            RobotMap.baseMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            arm.armBase(-lTrigger / 2);
-        }
-        if (rTrigger > 0.05){
-            RobotMap.baseMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            arm.armBase(rTrigger / 2);
-        }
-        if (rTrigger < 0.01 && lTrigger < 0){
-            RobotMap.baseMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            RobotMap.baseMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            RobotMap.baseMotor.getCurrentPosition();
-            RobotMap.baseMotor.setTargetPosition(0);
-            telemetry.addLine("Arm stopped");
-        }
-
         //Joint
             //Joint up
-        if(buttonA){
-            arm.joint(-0.3);
+        if(buttonY){
+            arm.joint(-0.7);
         }
             //Joint down
-        if(buttonB){
-            arm.joint(0.3);
+        if(buttonX){
+            arm.joint(0.25);
         }
+
+
 
         //Claw
             //Open
-        if(buttonY){
+        if(buttonA){
             arm.claw(-0.3);
         }
-        if(buttonX){
-            arm.claw(0.6);
+        if(buttonB){
+            arm.claw(0.8);
         }
 
 

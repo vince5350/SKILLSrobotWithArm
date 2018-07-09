@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class RobotMap {
     //Motors
@@ -14,12 +13,7 @@ public class RobotMap {
 
     //Arm
     public Servo   armJointServo = null;
-    public Servo   clawLeft      = null;
-    public Servo   clawRight     = null;
-    public static DcMotor baseMotor     = null;
-
-    //Switch
-    private TouchSensor limSwitch = null;
+    public Servo   servoClaw          = null;
 
 
     public RobotMap(){}
@@ -40,17 +34,11 @@ public class RobotMap {
 
         //Arm
         armJointServo = hwMap.servo.get("Arm Joint");
-        baseMotor = hwMap.dcMotor.get("Base Motor");
-        baseMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        clawRight = hwMap.servo.get("Right Claw");
-        clawLeft = hwMap.servo.get("Left Claw");
-        clawLeft.setDirection(Servo.Direction.REVERSE);
+        servoClaw = hwMap.servo.get("Claw");
+        servoClaw.setDirection(Servo.Direction.REVERSE);
 
-        //Limit Switch
-        limSwitch = hwMap.touchSensor.get("limitSwitch");
 
         //Set ZeroPowerBehavior
-        baseMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLftWheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRhtWheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLftWheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
